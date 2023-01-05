@@ -55,11 +55,11 @@ app.post("/post", (req, res) => {
 //DELETE USER
 app.delete("/deleteuser/:id", (req, res) => {
   const delId = req.params.id;
-  con.query("delete from mytable where id=?", [delId], (err, result) => {
+  con.query("delete from USERS1 where USER_ID=?", [delId], (err, result) => {
     if (err) {
       console.log(err);
     } else {
-      res.send(deleted);
+      res.send("deleted");
     }
   });
 });
@@ -72,7 +72,7 @@ app.put("/update/:id", (req, res) => {
   const phone = req.body.phone;
 
   con.query(
-    "UPDATE mytable SET name =?,lastname = ?,email=?,phone=?",
+    "UPDATE USERS1 SET name =?,lastname = ?,email=?,phone=?",
     [name, lastname, email, phone],
     (err, result) => {
       if (err) {
