@@ -4,6 +4,7 @@ const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
+//CREATING DATABASE
 const con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -11,6 +12,7 @@ const con = mysql.createConnection({
   database: "PROBO",
 });
 
+//CONNECTING DATABASE
 con.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
@@ -31,6 +33,7 @@ app.get("/fetch", (req, res) => {
   });
 });
 
+//CREATING A NEW USER
 app.post("/post", (req, res) => {
   const name = req.body.name;
   const lastname = req.body.lastname;
@@ -65,25 +68,27 @@ app.delete("/deleteuser/:id", (req, res) => {
 });
 //UPDATE USER
 app.put("/update/:id", (req, res) => {
-  const upId = req.params.id;
+  const id = req.params.id;
   const name = req.body.name;
   const lastname = req.body.lastname;
   const email = req.body.email;
   const phone = req.body.phone;
-
+  console.log(id);
   con.query(
-    "UPDATE USERS1 SET name =?,lastname = ?,email=?,phone=?",
-    [name, lastname, email, phone],
-    (err, result) => {
+    `UPDATE USERS1 SET NAME = "${name}", LAST_NAME = "${lastname}", EMAIL = "${email}", MOBILE = "${phone}" WHERE USER_ID="${id}"`,
+    (err) => {
       if (err) {
         console.log(err);
+        res.send("ERROR IN INSERT!!!!");
       } else {
-        res.send("UPDATED");
+        console.log("INSERT SUCCESSFUL");
+        res.send("INSERTED!!!!");
       }
     }
   );
 });
 
+// CONNECTING SERVER
 const port = 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port}`);
